@@ -70,7 +70,7 @@ export class TvApp extends LitElement {
   }
 
   itemClick(e) {
-    console.log(e.target);
+    console.log(e.target); //e.target.id for pages to load, look in render
     const dialog = this.shadowRoot.querySelector('.dialog');
     dialog.show();
   }
