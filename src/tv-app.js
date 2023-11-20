@@ -11,6 +11,7 @@ export class TvApp extends LitElement {
     this.name = '';
     this.source = new URL('../assets/channels.json', import.meta.url).href;
     this.listings = [];
+    
   }
   // convention I enjoy using to define the tag's name
   static get tag() {

@@ -11,7 +11,7 @@
       {
         "id": "item-1",
         "indent": 0,
-        "location": "hax-wp-killer.html",
+        "location": "page1.html",
         "slug": "hax-wp-killer",
         "order": 0,
         "parent": null,
@@ -28,7 +28,7 @@
       {
         "id": "item-2",
         "indent": 0,
-        "location": "this-is-water.html",
+        "location": "page2.html",
         "slug": "this-is-water",
         "order": 0,
         "parent": null,
@@ -45,7 +45,7 @@
       {
         "id": "item-3",
         "indent": 0,
-        "location": "hax-wp-killer.html",
+        "location": "page3.html",
         "slug": "hax-wp-killer",
         "order": 0,
         "parent": null,
@@ -62,7 +62,7 @@
       {
         "id": "item-4",
         "indent": 0,
-        "location": "hax-wp-killer.html",
+        "location": "page4.html",
         "slug": "hax-wp-killer",
         "order": 0,
         "parent": null,
@@ -79,7 +79,7 @@
       {
         "id": "item-5",
         "indent": 0,
-        "location": "hax-wp-killer.html",
+        "location": "page5.html",
         "slug": "hax-wp-killer",
         "order": 0,
         "parent": null,
@@ -96,7 +96,7 @@
       {
         "id": "item-6",
         "indent": 0,
-        "location": "hax-wp-killer.html",
+        "location": "page6.html",
         "slug": "hax-wp-killer",
         "order": 0,
         "parent": null,
@@ -113,7 +113,7 @@
       {
         "id": "item-7",
         "indent": 0,
-        "location": "hax-wp-killer.html",
+        "location": "page7.html",
         "slug": "hax-wp-killer",
         "order": 0,
         "parent": null,
@@ -130,7 +130,7 @@
       {
         "id": "item-8",
         "indent": 0,
-        "location": "hax-wp-killer.html",
+        "location": "page8.html",
         "slug": "hax-wp-killer",
         "order": 0,
         "parent": null,
@@ -147,7 +147,7 @@
       {
         "id": "item-9",
         "indent": 0,
-        "location": "hax-wp-killer.html",
+        "location": "page9.html",
         "slug": "hax-wp-killer",
         "order": 0,
         "parent": null,
