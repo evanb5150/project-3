@@ -34,6 +34,49 @@ export class TvApp extends LitElement {
         margin: 16px;
         padding: 16px;
       }
+
+      #previous>button {
+        border-radius: 4px;
+        font-family:
+          Google Sans,
+          Arial,
+          sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.6px;
+        line-height: 24px;
+        padding-bottom: 6px;
+        padding-left: 24px;
+        padding-right: 24px;
+        padding-top: 6px;
+        pointer-events: auto;
+        text-transform: none;
+        background: #fff;
+        color: #1a73e8;
+        border: 0;
+        box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12), 0 3px 1px -2px rgba(0,0,0,.2);
+      }
+      #next>button {
+        border-radius: 4px;
+        font-family:
+          Google Sans,
+          Arial,
+          sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.6px;
+        line-height: 24px;
+        padding-bottom: 6px;
+        padding-left: 24px;
+        padding-right: 24px;
+        padding-top: 6px;
+        pointer-events: auto;
+        text-transform: none;
+        background: #1a73e8;
+        color: #fff;
+        border: 0;
+        box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12), 0 3px 1px -2px rgba(0,0,0,.2);
+      }
       `
     ];
   }
@@ -41,6 +84,13 @@ export class TvApp extends LitElement {
   render() {
     return html`
       <h2>${this.name}</h2>
+      <div id="previous">
+            <button @click=${() => this.prevPage()}>Back</button>
+          </div>
+          <div id="next">
+            <button @click=${() => this.nextPage()}>Next</button>
+          </div>
+
       ${
         this.listings.map(
           (item) => html`
