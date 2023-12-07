@@ -17,7 +17,6 @@ export class TvApp extends LitElement {
     this.selectedCourse = null;
     this.activeIndex = null;
     this.itemClick = this.itemClick.bind(this);
-    // this.time = "";
     
   }
 
