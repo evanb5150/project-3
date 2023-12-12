@@ -10,18 +10,22 @@ export class TvApp extends LitElement {
   // defaults
   constructor() {
     super();
-    this.name = "";
     this.source = new URL('../assets/channels.json', import.meta.url).href;
     this.listings = [];
     this.id = "";
     this.selectedCourse = null;
     this.activeIndex = null;
     this.itemClick = this.itemClick.bind(this);
-    
+    this.activeContent = "";
+    this.farthestIndex = 0;
+    this.time = "";
+
   }
 
   connectedCallback() {
     super.connectedCallback();
+    this.onloadeddata();
+    this.loadState();
   }
 
   // convention I enjoy using to define the tag's name
@@ -154,6 +158,8 @@ export class TvApp extends LitElement {
 }
   // LitElement rendering template of your element
   render() {
+    const isFirstCourse = this.activeIndex === 0;
+    const isLastCourse = this.activeIndex === this.listings.length - 1;
     return html`
     <course-title time="${this.time}"> </course-title>
     <div class="alignContent">
@@ -172,21 +178,76 @@ export class TvApp extends LitElement {
       </div>
 
       <div class="main">
-        <!-- ternary operator to check if the active content is null or not -->
-        ${this.activeContent ? unsafeHTML(this.activeContent) : html``}
+        
+        ${this.renderActiveContent()}
       </div>
 
       <div class="fabs">
-        <div id="previous">
+        <div id="previous" style="${isFirstCourse ? 'display: none;' : ''}">
           <button @click=${() => this.prevPage()}>Back</button>
         </div>
-        <div id="next">
+        <div id="next" style="${isLastCourse ? 'display: none;' : ''}">
           <button @click=${() => this.nextPage()}>Next</button>
         </div>
+        </div>
       </div>
-    </div>
   `;
 }
+
+renderActiveContent() {
+  if (!this.activeContent) {
+    return html``; // Return empty template if no active content
+  }
+
+  // Create a template element to safely parse the fetched HTML text
+  const template = document.createElement('template');
+  template.innerHTML = this.activeContent;
+  
+  // Return the parsed content within a lit-html template
+  return html`${template.content}`;
+}
+
+loadState() {
+  const storedActiveIndex = localStorage.getItem('activeIndex');
+  const storedFarthestIndex = localStorage.getItem('farthestIndex');
+  if (storedActiveIndex !== null && storedFarthestIndex !== null) {
+    this.activeIndex = parseInt(storedActiveIndex, 10);
+    this.farthestIndex = parseInt(storedFarthestIndex, 10);
+    this.loadActiveContent();
+  }
+}
+
+saveState() {
+  localStorage.setItem('activeIndex', this.activeIndex);
+  localStorage.setItem('farthestIndex', this.farthestIndex);
+
+  
+  if (this.activeIndex === this.listings.length - 1) {
+    localStorage.removeItem('activeIndex');
+    localStorage.removeItem('farthestIndex');
+  }
+}
+
+
+async loadData() {
+  // Fetch data from the source
+  await fetch(this.source)
+    .then((resp) => (resp.ok ? resp.json() : []))
+    .then((responseData) => {
+      if (
+        responseData.status === 200 &&
+        responseData.data.items &&
+        responseData.data.items.length > 0
+      ) {
+        this.listings = [...responseData.data.items];
+        this.loadActiveContent();
+      }
+    })
+    .catch((error) => {
+      console.error('Error fetching data:', error);
+    });
+}
+
 
 async nextPage() {
   if (this.activeIndex !== null) {
@@ -194,12 +255,14 @@ async nextPage() {
     const item = this.listings[nextIndex].location;
 
     const contentPath = "/assets/" + item;
+    this.time = this.listings[nextIndex].metadata.timecode;
 
     try {
       const response = await fetch(contentPath);
       this.activeContent = await response.text();
       // console.log("Active Content", this.activeContent);
       this.activeIndex = nextIndex; // Update the active index after fetching content
+      this.saveState();
     } catch (err) {
       console.log("fetch failed", err);
     }
@@ -213,7 +276,7 @@ async prevPage() {
     const prevIndex = this.activeIndex - 1; // Get the previous index
 
     const item = this.listings[prevIndex].location; // Get the location of the content
-
+    this.time = this.listings[prevIndex].metadata.timecode; 
     const contentPath = "/assets/" + item;
 
     try {
@@ -251,22 +314,19 @@ async prevPage() {
       const text = await response.text();
       // console.log("Text: ", text);
       this.activeContent = text; // Update the active content after fetching
+      if (this.activeIndex > this.farthestIndex) {
+        this.farthestIndex = this.activeIndex;
+      }
+      this.saveState();
     } catch (err) {
       console.log("fetch failed", err);
     }
   }
 
-  // LitElement life cycle for when any property changes
-  updated(changedProperties) {
-    if (super.updated) {
-      super.updated(changedProperties);
-    }
-    changedProperties.forEach((oldValue, propName) => {
-      if (propName === "source" && this[propName]) {
-        this.updateSourceData(this[propName]);
-      }
-    });
+  firstUpdate(){
+    this.activeIndex = 0;
   }
+
 
   // LitElement life cycle for when any property changes
   updated(changedProperties) {
@@ -279,15 +339,40 @@ async prevPage() {
       }
     });
   }
+
+  loadActiveContent() {
+    if (this.listings && this.listings.length > 0 && this.activeIndex >= 0 && this.activeIndex < this.listings.length) {
+      const item = this.listings[this.activeIndex].location;
+      const contentPath = "/assets/" + item;
+
+      fetch(contentPath)
+        .then((response) => response.text())
+        .then((text) => {
+          this.activeContent = text;
+          this.time = this.listings[this.activeIndex].metadata.timecode;
+        })
+        .catch((error) => {
+          console.error('Error fetching active content:', error);
+        });
+    }
+  }
+
   
   async updateSourceData(source) {
-    await fetch(source).then((resp) => resp.ok ? resp.json() : []).then((responseData) => {
-      if (responseData.status === 200 && responseData.data.items && responseData.data.items.length > 0) {
-        this.listings = [...responseData.data.items];
-        console.log("Listings: ", this.listings);
-      }
-    });
+    await fetch(source)
+      .then((resp) => (resp.ok ? resp.json() : []))
+      .then((responseData) => {
+        if (
+          responseData.status === 200 &&
+          responseData.data.items &&
+          responseData.data.items.length > 0
+        ) {
+          this.listings = [...responseData.data.items]; // Spread operator to clone the array
+          console.log("Listings: ", this.listings);
+        }
+      });
   }
 }
+
 // tell the browser about our tag and class it should run when it sees it
 customElements.define(TvApp.tag, TvApp);

@@ -95,11 +95,7 @@ export class CourseTitle extends LitElement {
   render() {
     return html`
       <div id="codelab-title">
-        <!-- <div id="codelab-nav-buttons">
-          <a href="/" id="arrow-back" class="no-return-url"
-            ><i class="material-icons">close</i></a
-          ><a href="#" id="menu"><i class="material-icons">menu</i></a>
-        </div> -->
+        
         <h1 is-upgraded="" class="title">
           <a
             href="https://codelabs.developers.google.com/codelabs/the-lit-path?hl=en"
@@ -132,7 +128,9 @@ export class CourseTitle extends LitElement {
       <div class="" style="display:block">
         <div class=""></div>
         <div class="">
-         
+        <a class="" aria-label="Google Account: Oj Akanbi (oakanbi13@gmail.com)" href="https://accounts.google.com/SignOutOptions?hl=en&amp;continue=https://codelabs.developers.google.com/_d/profile/ogb%3Fhl%3Den&amp;ec=GBRAywI" role="button" tabindex="0" id="devsite-signin-btn">
+              <img class="" style = "border-radius: 33px" href ="https://lh3.googleusercontent.com/ogw/AKPQZvzoUf_x8dNI-Nv_q2cF1O1_ZPavIMJqxzFvCMkRKg=s32-c-mo" srcset="https://lh3.googleusercontent.com/ogw/AKPQZvzoUf_x8dNI-Nv_q2cF1O1_ZPavIMJqxzFvCMkRKg=s32-c-mo 1x, https://lh3.googleusercontent.com/ogw/AKPQZvzoUf_x8dNI-Nv_q2cF1O1_ZPavIMJqxzFvCMkRKg=s64-c-mo 2x" alt="" aria-hidden="true" data-noaft="">
+            </a>
         </div>
       </div>
     </div>
