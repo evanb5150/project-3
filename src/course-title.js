@@ -115,13 +115,6 @@ export class CourseTitle extends LitElement {
             ${this.time}
           </div>
         </div>
-
-     
-       
-
-
-
-    
 <div class="">
   <div class="" id="gb">
     <div class="" ng-non-bindable="" data-ogsr-up="" style="padding:0;height:auto;display:block">

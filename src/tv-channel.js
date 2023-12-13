@@ -25,16 +25,12 @@ export class TvChannel extends LitElement {
     return css`
     :host {
       display: block;
-      /* margin: 16px;
-      padding: 16px; */
     }
     .wrapper {
-      /* font-size: larger; */
       text-decoration: none;
       display: flex;
       -webkit-box-align: center;
       align-items: center;
-      /* font-size: 100px; */
       color: rgb(128, 134, 139);
       min-height: 52px;
       font-weight: bold;
@@ -80,26 +76,10 @@ export class TvChannel extends LitElement {
     .wrapper:active {
       background-color: #1a73e8;
     }
-
-    @media (min-width: 800px) {
-      /* h3{
-        font-size: 18px;
-      }
-
-      h4 {
-        font-size: 15px;
-      } */
-
-      /* .wrapper{
-      max-width: auto;
-      max-height: auto;
-    } */
-    }
   `;
 }
 
 updated(changedProperties) {
-  // Course progression
   if (changedProperties.has("activeIndex") && this.activeIndex !== null) {
     const dot = this.shadowRoot.querySelector(".dot");
     const id = this.shadowRoot.querySelector("#title");

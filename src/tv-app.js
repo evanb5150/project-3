@@ -94,7 +94,7 @@ export class TvApp extends LitElement {
         background: #f8f9fa;
       }
 
-      .fabs {
+      .footer {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -147,6 +147,7 @@ export class TvApp extends LitElement {
         text-transform: none;
         background: #1a73e8;
         color: #fff;
+        align : right;
         border: 0;
         box-shadow:
           0 2px 2px 0 rgba(0, 0, 0, 0.14),
@@ -156,7 +157,7 @@ export class TvApp extends LitElement {
     `,
   ];
 }
-  // LitElement rendering template of your element
+ 
   render() {
     const isFirstCourse = this.activeIndex === 0;
     const isLastCourse = this.activeIndex === this.listings.length - 1;
@@ -182,11 +183,11 @@ export class TvApp extends LitElement {
         ${this.renderActiveContent()}
       </div>
 
-      <div class="fabs">
+      <div class="footer">
         <div id="previous" style="${isFirstCourse ? 'display: none;' : ''}">
           <button @click=${() => this.prevPage()}>Back</button>
         </div>
-        <div id="next" style="${isLastCourse ? 'display: none;' : ''}">
+        <div id="next" style="${isLastCourse ? 'display: none; align: right;' : ''}">
           <button @click=${() => this.nextPage()}>Next</button>
         </div>
         </div>
@@ -199,11 +200,8 @@ renderActiveContent() {
     return html``; // Return empty template if no active content
   }
 
-  // Create a template element to safely parse the fetched HTML text
   const template = document.createElement('template');
   template.innerHTML = this.activeContent;
-  
-  // Return the parsed content within a lit-html template
   return html`${template.content}`;
 }
 
@@ -230,7 +228,6 @@ saveState() {
 
 
 async loadData() {
-  // Fetch data from the source
   await fetch(this.source)
     .then((resp) => (resp.ok ? resp.json() : []))
     .then((responseData) => {
@@ -260,8 +257,7 @@ async nextPage() {
     try {
       const response = await fetch(contentPath);
       this.activeContent = await response.text();
-      // console.log("Active Content", this.activeContent);
-      this.activeIndex = nextIndex; // Update the active index after fetching content
+      this.activeIndex = nextIndex; 
       this.saveState();
     } catch (err) {
       console.log("fetch failed", err);
@@ -271,19 +267,18 @@ async nextPage() {
 
 async prevPage() {
   if (this.activeIndex !== null) {
-    // console.log("Active Index: ", this.activeIndex);
+    
 
-    const prevIndex = this.activeIndex - 1; // Get the previous index
+    const prevIndex = this.activeIndex - 1; 
 
-    const item = this.listings[prevIndex].location; // Get the location of the content
+    const item = this.listings[prevIndex].location; 
     this.time = this.listings[prevIndex].metadata.timecode; 
     const contentPath = "/assets/" + item;
 
     try {
       const response = await fetch(contentPath);
       this.activeContent = await response.text();
-      // console.log("Active Content", this.activeContent);
-      this.activeIndex = prevIndex; // Update the active index after fetching content
+      this.activeIndex = prevIndex; 
     } catch (err) {
       console.log("fetch failed", err);
     }
@@ -296,24 +291,15 @@ async prevPage() {
   }
 
   async itemClick(index) {
-    this.activeIndex = index; // Update the active index after fetching content
-    // console.log("Active Index: ", this.activeIndex);
-
-    const item = this.listings[index].location; // Get the location of the content
-    // console.log("Active Content: ", item);
-
-    this.time = this.listings[index].metadata.timecode; // Get the timecode of the content
-    // console.log("Time: ", this.time);
-
+    this.activeIndex = index; 
+    const item = this.listings[index].location; 
+    this.time = this.listings[index].metadata.timecode; 
     const contentPath = "/assets/" + item;
 
-    // add the path to fetch for the content that presist in our assets folder
     try {
       const response = await fetch(contentPath);
-      // console.log("Response: ", response);
       const text = await response.text();
-      // console.log("Text: ", text);
-      this.activeContent = text; // Update the active content after fetching
+      this.activeContent = text; 
       if (this.activeIndex > this.farthestIndex) {
         this.farthestIndex = this.activeIndex;
       }
@@ -328,7 +314,7 @@ async prevPage() {
   }
 
 
-  // LitElement life cycle for when any property changes
+
   updated(changedProperties) {
     if (super.updated) {
       super.updated(changedProperties);
@@ -367,7 +353,7 @@ async prevPage() {
           responseData.data.items &&
           responseData.data.items.length > 0
         ) {
-          this.listings = [...responseData.data.items]; // Spread operator to clone the array
+          this.listings = [...responseData.data.items];
           console.log("Listings: ", this.listings);
         }
       });
